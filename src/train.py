@@ -93,8 +93,7 @@ def main():
     col = get_bow_columns(bow_train)
     
     # Connect your script to Neptune
-    neptune.init(api_token=os.getenv('eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ=='),
-    project_qualified_name=os.getenv('febiandika12/SentimentAnalysis'))
+    neptune.init(project_qualified_name='febiandika12/SentimentAnalysis', api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==')
     
     # Create an experiment and log hyperparameters
     neptune.create_experiment('NLP_test')
@@ -131,9 +130,9 @@ def main():
     neptune.log_image('performance charts', fig_cm)
     neptune.log_image('performance charts', fig_pr)
 
-    # Handle CI pipeline details
-    if os.getenv('CI') == "true":
-        neptune.append_tag('ci-pipeline', os.getenv('NEPTUNE_EXPERIMENT_TAG_ID'))
+#     # Handle CI pipeline details
+#     if os.getenv('CI') == "true":
+#         neptune.append_tag('ci-pipeline', os.getenv('NEPTUNE_EXPERIMENT_TAG_ID'))
     
 if __name__ == "__main__":
     main()
