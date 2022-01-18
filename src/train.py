@@ -113,23 +113,23 @@ def main():
     f1 = f1_score(test['sentiment'].tolist(), pred_logreg, average='macro')
     accuracy = accuracy_score(test['sentiment'].tolist(), pred_logreg)
     
-    # Log metrics to Neptune
-    neptune.log_metric('accuracy', accuracy)
-    neptune.log_metric('f1_score', f1)
+#     # Log metrics to Neptune
+#     neptune.log_metric('accuracy', accuracy)
+#     neptune.log_metric('f1_score', f1)
 
-    fig_roc, ax = plt.subplots(figsize=(12, 10))
-    plot_roc(test['sentiment'].tolist(), pred_logreg, ax=ax)
+#     fig_roc, ax = plt.subplots(figsize=(12, 10))
+#     plot_roc(test['sentiment'].tolist(), pred_logreg, ax=ax)
 
-    fig_cm, ax = plt.subplots(figsize=(12, 10))
-    plot_confusion_matrix(test['sentiment'].tolist(), pred_logreg, ax=ax)
+#     fig_cm, ax = plt.subplots(figsize=(12, 10))
+#     plot_confusion_matrix(test['sentiment'].tolist(), pred_logreg, ax=ax)
 
-    fig_pr, ax = plt.subplots(figsize=(12, 10))
-    plot_precision_recall(test['sentiment'].tolist(), pred_logreg, ax=ax)
+#     fig_pr, ax = plt.subplots(figsize=(12, 10))
+#     plot_precision_recall(test['sentiment'].tolist(), pred_logreg, ax=ax)
 
-    # Log performance charts to Neptune
-    neptune.log_image('performance charts', fig_roc)
-    neptune.log_image('performance charts', fig_cm)
-    neptune.log_image('performance charts', fig_pr)
+#     # Log performance charts to Neptune
+#     neptune.log_image('performance charts', fig_roc)
+#     neptune.log_image('performance charts', fig_cm)
+#     neptune.log_image('performance charts', fig_pr)
 
 #     # Handle CI pipeline details
 #     if os.getenv('CI') == "true":
