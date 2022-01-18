@@ -92,8 +92,8 @@ def main():
     col = get_bow_columns(bow_train)
     
     # Connect your script to Neptune
-    neptune.init(api_token=os.getenv('eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ=='),
-    project_qualified_name=os.getenv('febiandika12/SentimentAnalysis'))
+    neptune.init(api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==',
+    project_qualified_name='febiandika12/SentimentAnalysis')
     
     # Create an experiment and log hyperparameters
     neptune.create_experiment('NLP_test')
