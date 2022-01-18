@@ -1,5 +1,6 @@
 import re
 import nltk
+nltk.download('stopwords')
 
 def tokenization(text):
     # Word Tokenization
