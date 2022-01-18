@@ -72,7 +72,7 @@ def bag_of_words(train, test):
     return df_bow_train, df_bow_test
 
 def model_training(bow_train, train):
-    logreg = LogisticRegression(max_iter=500, random_state=2021)
+    logreg = LogisticRegression(max_iter=5, random_state=2021)
     logreg.fit(bow_train, train['sentiment'].tolist())
     return logreg
 
