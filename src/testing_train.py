@@ -70,7 +70,7 @@ def bag_of_words(train, test):
     return df_bow_train, df_bow_test
 
 def model_training(bow_train, train):
-    logreg = LogisticRegression(max_iter=1000, random_state=2021)
+    logreg = LogisticRegression(max_iter=1000, random_state=2030)
     logreg.fit(bow_train, train['sentiment'].tolist())
     return logreg
 
@@ -97,7 +97,7 @@ def main():
     for i in range(0,len(logregpred)):
         pred_logreg.append(utils.argmax_2(logregpred[i]))
 
-
+    # Edit Here
     acc_score = round(accuracy_score(test['sentiment'].tolist(),pred_logreg), 5)
     print("accuracy: ", acc_score)
     if acc_score <= 0.4:
