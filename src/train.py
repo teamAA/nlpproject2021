@@ -92,8 +92,8 @@ def main():
     col = get_bow_columns(bow_train)
     
     # Connect your script to Neptune
-    neptune.init(api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==',
-    project_qualified_name='febiandika12/SentimentAnalysis')
+    neptune.init(api_token=os.getenv('eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ=='),
+    project_qualified_name=os.getenv('febiandika12/SentimentAnalysis'))
     
     # Create an experiment and log hyperparameters
     neptune.create_experiment('NLP_test')
@@ -109,8 +109,8 @@ def main():
 
     print("accuracy: ", round(accuracy_score(test['sentiment'].tolist(),pred_logreg), 5))
     
-    f1 = f1_score(test['sentiment'].tolist(), pred_logreg.argmax(axis=1), average='macro')
-    accuracy = accuracy_score(test['sentiment'].tolist(), pred_logreg.argmax(axis=1))
+    f1 = f1_score(test['sentiment'].tolist(), pred_logreg, average='macro')
+    accuracy = accuracy_score(test['sentiment'].tolist(), pred_logreg)
     
     # Log metrics to Neptune
     neptune.log_metric('accuracy', accuracy)
