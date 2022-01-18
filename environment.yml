@@ -1,15 +1,1 @@
-name: nlp
-channels:
-  - defaults
-dependencies:
-  - certifi=2020.6.20
-  - pip=21.2.2
-  - python=3.6.13
-  - setuptools=58.0.4
-  - sqlite=3.37.0
-  - vc=14.2
-  - vs2015_runtime=14.27.29016
-  - wheel=0.37.1
-  - wincertstore=0.2
-prefix: C:\Users\febian064178\AppData\Local\Continuum\anaconda3\envs\nlp
-
+Terminate batch job (Y/N)? 
