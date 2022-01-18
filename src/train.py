@@ -1,4 +1,4 @@
-import os
+import sys
 import re
 import utils
 import pickle
@@ -30,10 +30,7 @@ def load_data():
     df = pd.concat([train,test],axis=0)
     df = df.reset_index().drop('index',axis=1)
 
-    with open("./version.txt", mode = "w") as f:
-        f.write(f"{len(dvc_train)}, {len(dvc_test)}")
-
-    return df
+    return df, len(dvc_train), len(dvc_test)
 
 def data_preproc(df):
     df['sentiment'] = np.where(df['sentiment']=='neutral',0,df['sentiment'])
@@ -86,8 +83,34 @@ def get_bow_columns(df_bow):
             col.append(i)
     return col
 
+def log_neptune(test, pred):
+    f1 = f1_score(test['sentiment'].tolist(), pred, average='macro')
+    accuracy = accuracy_score(test['sentiment'].tolist(), pred)
+    
+    # Log metrics to Neptune
+    neptune.log_metric('accuracy', accuracy)
+    neptune.log_metric('f1_score', f1)
+
+    #     fig_roc, ax = plt.subplots(figsize=(12, 10))
+    #     plot_roc(test['sentiment'].tolist(), pred_logreg, ax=ax)
+
+    #     fig_cm, ax = plt.subplots(figsize=(12, 10))
+    #     plot_confusion_matrix(test['sentiment'].tolist(), pred_logreg, ax=ax)
+
+    #     fig_pr, ax = plt.subplots(figsize=(12, 10))
+    #     plot_precision_recall(test['sentiment'].tolist(), pred_logreg, ax=ax)
+
+    #     # Log performance charts to Neptune
+    #     neptune.log_image('performance charts', fig_roc)
+    #     neptune.log_image('performance charts', fig_cm)
+    #     neptune.log_image('performance charts', fig_pr)
+
+    #     # Handle CI pipeline details
+    #     if os.getenv('CI') == "true":
+    #         neptune.append_tag('ci-pipeline', os.getenv('NEPTUNE_EXPERIMENT_TAG_ID'))
+
 def main():
-    df = load_data()
+    df, len_train, len_test = load_data()
     train, test = data_preproc(df)
     bow_train, bow_test = bag_of_words(train, test)
 
@@ -110,30 +133,15 @@ def main():
 
     print("accuracy: ", round(accuracy_score(test['sentiment'].tolist(),pred_logreg), 5))
     
-    f1 = f1_score(test['sentiment'].tolist(), pred_logreg, average='macro')
-    accuracy = accuracy_score(test['sentiment'].tolist(), pred_logreg)
+    log_neptune(test, pred_logreg)
     
-    # Log metrics to Neptune
-    neptune.log_metric('accuracy', accuracy)
-    neptune.log_metric('f1_score', f1)
+    with open("./version.txt", mode = "w") as f:
+        f.write(f"{len_train}, {len_test}")
+    
 
-#     fig_roc, ax = plt.subplots(figsize=(12, 10))
-#     plot_roc(test['sentiment'].tolist(), pred_logreg, ax=ax)
 
-#     fig_cm, ax = plt.subplots(figsize=(12, 10))
-#     plot_confusion_matrix(test['sentiment'].tolist(), pred_logreg, ax=ax)
-
-#     fig_pr, ax = plt.subplots(figsize=(12, 10))
-#     plot_precision_recall(test['sentiment'].tolist(), pred_logreg, ax=ax)
-
-#     # Log performance charts to Neptune
-#     neptune.log_image('performance charts', fig_roc)
-#     neptune.log_image('performance charts', fig_cm)
-#     neptune.log_image('performance charts', fig_pr)
-
-#     # Handle CI pipeline details
-#     if os.getenv('CI') == "true":
-#         neptune.append_tag('ci-pipeline', os.getenv('NEPTUNE_EXPERIMENT_TAG_ID'))
     
 if __name__ == "__main__":
     main()
+
+    sys.exit(0)
