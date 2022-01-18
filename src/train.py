@@ -7,7 +7,10 @@ import pandas as pd
 from io import StringIO
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
+from scikitplot.metrics import plot_roc, plot_confusion_matrix, plot_precision_recall
+import neptune
+from neptunecontrib.monitoring.lightgbm import neptune_monitor
 
 
 
@@ -87,6 +90,13 @@ def main():
     bow_train, bow_test = bag_of_words(train, test)
 
     col = get_bow_columns(bow_train)
+    
+    # Connect your script to Neptune
+    neptune.init(api_token=os.getenv('eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ=='),
+    project_qualified_name=os.getenv('febiandika12/SentimentAnalysis'))
+    
+    # Create an experiment and log hyperparameters
+    neptune.create_experiment('NLP_test')
 
     model = model_training(bow_train[col], train)
 
@@ -98,7 +108,31 @@ def main():
         pred_logreg.append(utils.argmax_2(logregpred[i]))
 
     print("accuracy: ", round(accuracy_score(test['sentiment'].tolist(),pred_logreg), 5))
+    
+    f1 = f1_score(test['sentiment'].tolist(), pred_logreg.argmax(axis=1), average='macro')
+    accuracy = accuracy_score(test['sentiment'].tolist(), pred_logreg.argmax(axis=1))
+    
+    # Log metrics to Neptune
+    neptune.log_metric('accuracy', accuracy)
+    neptune.log_metric('f1_score', f1)
 
+    fig_roc, ax = plt.subplots(figsize=(12, 10))
+    plot_roc(test['sentiment'].tolist(), pred_logreg, ax=ax)
 
+    fig_cm, ax = plt.subplots(figsize=(12, 10))
+    plot_confusion_matrix(test['sentiment'].tolist(), pred_logreg, ax=ax)
+
+    fig_pr, ax = plt.subplots(figsize=(12, 10))
+    plot_precision_recall(test['sentiment'].tolist(), pred_logreg, ax=ax)
+
+    # Log performance charts to Neptune
+    neptune.log_image('performance charts', fig_roc)
+    neptune.log_image('performance charts', fig_cm)
+    neptune.log_image('performance charts', fig_pr)
+
+    # Handle CI pipeline details
+    if os.getenv('CI') == "true":
+        neptune.append_tag('ci-pipeline', os.getenv('NEPTUNE_EXPERIMENT_TAG_ID'))
+    
 if __name__ == "__main__":
     main()
