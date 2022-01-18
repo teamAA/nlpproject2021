@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-
+# firli was here
 
 def load_data():
     dvc_train = dvc.api.read('data-registry/train.csv', repo='../')
