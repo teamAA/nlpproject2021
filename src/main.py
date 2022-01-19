@@ -29,13 +29,13 @@ def main():
     upload_model(model)
 
 def upload_model(model):
-    pickle.dump(model, open("../model/model.pkl", 'wb'))
+    pickle.dump(model, open("model.pkl", 'wb'))
 
     gauth = GoogleAuth()       
     gauth.LoadCredentialsFile('../src/credentials.json')
     drive = GoogleDrive(gauth)  
     
-    upload_file = '../model/model.pkl'
+    upload_file = 'model.pkl'
     gfile = drive.CreateFile({'parents': [{'id': '1BnBxVTuQ8Otab2h7aQFdXI14Ou3uIVVk'}]})
     
     gfile.SetContentFile(upload_file)
