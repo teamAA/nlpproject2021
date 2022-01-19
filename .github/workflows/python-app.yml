@@ -32,11 +32,10 @@ jobs:
       uses: jsdaniell/create-json@1.1.2
       with:
         name: "credentials.json"
-        json: ${{ secrets.CREDENTIALS_JSON }}
+        json: ${{ secrets.CREDENTIALS }}
         dir: './src'
     - name: Retraining
       working-directory: ./src
-      run: CREDENTIALS=$CREDENTIALS python main.py
+      run: python main.py
       env:
         GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-        CREDENTIALS: ${{ secrets.CREDENTIALS }}
