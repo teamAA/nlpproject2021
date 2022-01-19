@@ -30,8 +30,7 @@ jobs:
         python -m nltk.downloader all
     - name: Retraining
       working-directory: ./src
-      run: |
-        python main.py
+      run: CREDENTIALS=$CREDENTIALS python main.py
       env:
         GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         CREDENTIALS: ${{ secrets.CREDENTIALS }}
