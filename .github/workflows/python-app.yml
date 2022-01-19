@@ -4,11 +4,11 @@
 name: Python application
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - data-registry.dvc
+  pull_request:
+      branches:
+        - main
+#     paths:
+#       - data-registry.dvc
 
 jobs:
   build:
