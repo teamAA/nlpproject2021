@@ -6,7 +6,7 @@ jobs:
   run:
     runs-on: [ubuntu-latest]
     env:
-      GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA_2 }}
+      GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
     steps:
       - uses: actions/checkout@v2
       - name: Using Python 3.6
