@@ -15,9 +15,6 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    env:
-      GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-    
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.6
@@ -35,3 +32,5 @@ jobs:
       working-directory: ./src
       run: |
         python main.py
+      env:
+        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
