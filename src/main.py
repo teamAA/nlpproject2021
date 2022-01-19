@@ -23,9 +23,8 @@ def main():
 
     print("New data is available")
     print("Doing retraining.......")
-    #credentials = os.environ.get('GDRIVE_CREDENTIALS_DATA')
     model = retrain()
-    #print(credentials)
+    print("Done!")
 
     upload_model(model)
 
