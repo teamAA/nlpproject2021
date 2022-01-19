@@ -131,7 +131,15 @@ def main():
     for i in range(0,len(logregpred)):
         pred_logreg.append(utils.argmax_2(logregpred[i]))
 
-    print("accuracy: ", round(accuracy_score(test['sentiment'].tolist(),pred_logreg), 5))
+    # Testing
+    acc_score = round(accuracy_score(test['sentiment'].tolist(),pred_logreg), 5)
+    print("accuracy: ", acc_score)
+    if acc_score <= 0.4:
+        raise ValueError("Accuracy is too low")
+    elif acc_score >= 0.95:
+        raise ValueError("Accuracy is too high")
+    else:
+        pass
     
     log_neptune(test, pred_logreg)
     
