@@ -7,7 +7,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 def retrain():
-    return train.main()
+    return train.main(log = True)
 
 def main():
     print("New data is available")

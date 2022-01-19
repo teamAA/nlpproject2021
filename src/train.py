@@ -1,7 +1,7 @@
 import sys
 import re
 import utils
-import pickle
+import argparse
 import dvc.api
 import numpy as np
 import pandas as pd
@@ -84,6 +84,12 @@ def get_bow_columns(df_bow):
     return col
 
 def log_neptune(test, pred):
+    #Connect your script to Neptune
+    neptune.init(project_qualified_name='febiandika12/SentimentAnalysis', api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==')
+    
+    #Create an experiment and log hyperparameters
+    neptune.create_experiment('NLP_test')
+
     f1 = f1_score(test['sentiment'].tolist(), pred, average='macro')
     accuracy = accuracy_score(test['sentiment'].tolist(), pred)
     
@@ -109,22 +115,14 @@ def log_neptune(test, pred):
     #     if os.getenv('CI') == "true":
     #         neptune.append_tag('ci-pipeline', os.getenv('NEPTUNE_EXPERIMENT_TAG_ID'))
 
-def main():
+def main(log = False):
     df, len_train, len_test = load_data()
     train, test = data_preproc(df)
     bow_train, bow_test = bag_of_words(train, test)
 
     col = get_bow_columns(bow_train)
     
-    # Connect your script to Neptune
-    #neptune.init(project_qualified_name='febiandika12/SentimentAnalysis', api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==')
-    
-    # Create an experiment and log hyperparameters
-    #neptune.create_experiment('NLP_test')
-
     model = model_training(bow_train[col], train)
-
-    
 
     logregpred = model.predict_proba(bow_test[col])
     pred_logreg = []
@@ -141,16 +139,16 @@ def main():
     else:
         pass
     
-    #log_neptune(test, pred_logreg)
+    if log == True:
+        log_neptune(test, pred_logreg)
     
     return model
-    # with open("./version.txt", mode = "w") as f:
-    #     f.write(f"{len_train}, {len_test}")
-    
-
-
     
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--log", type = bool)
+    args = parser.parse_args()
+
+    main(args.log)
 
     sys.exit(0)
