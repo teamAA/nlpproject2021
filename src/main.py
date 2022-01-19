@@ -6,21 +6,10 @@ import train
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-# def check_data_version():    
-#     remote_ver = len(dvc.api.read('data-registry/train.csv', repo='../'))
-#     with open("./version.txt") as file:
-#         used_ver = file.readlines()[0].split(',')[0]
-    
-#     return int(used_ver) == int(remote_ver)
-
 def retrain():
     return train.main()
 
 def main():
-    # if check_data_version() == True:
-    #     print("There's no change in the database")
-    #     sys.exit(0)
-
     print("New data is available")
     print("Doing retraining.......")
     model = retrain()
