@@ -33,7 +33,7 @@ def upload_model(model):
     pickle.dump(model, open("../model/model.pkl", 'wb'))
 
     gauth = GoogleAuth()       
-    credentials = os.environ.get('GDRIVE_CREDENTIALS_DATA')
+    credentials = os.environ['GDRIVE_CREDENTIALS_DATA']
     gauth.LoadCredentialsFile(credentials)
     drive = GoogleDrive(gauth)  
     
