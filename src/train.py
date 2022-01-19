@@ -1,7 +1,6 @@
 import sys
 import re
 import utils
-import argparse
 import dvc.api
 import numpy as np
 import pandas as pd
@@ -145,10 +144,6 @@ def main(log = False):
     return model
     
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--log", type = bool)
-    args = parser.parse_args()
-
-    main(args.log)
+    main(log = False)
 
     sys.exit(0)
