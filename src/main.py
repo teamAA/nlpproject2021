@@ -23,17 +23,17 @@ def main():
 
     print("New data is available")
     print("Doing retraining.......")
-    credentials = os.environ.get('GDRIVE_CREDENTIALS_DATA')
-    #model = retrain()
-    print(credentials)
+    #credentials = os.environ.get('GDRIVE_CREDENTIALS_DATA')
+    model = retrain()
+    #print(credentials)
 
-    #upload_model(model)
+    upload_model(model)
 
 def upload_model(model):
     pickle.dump(model, open("../model/model.pkl", 'wb'))
 
     gauth = GoogleAuth()       
-    credentials = os.environ['GDRIVE_CREDENTIALS_DATA']
+    credentials = os.environ['CREDENTIALS']
     gauth.LoadCredentialsFile(credentials)
     drive = GoogleDrive(gauth)  
     
