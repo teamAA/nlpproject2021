@@ -23,10 +23,11 @@ def main():
 
     print("New data is available")
     print("Doing retraining.......")
-    model = retrain()
-    print("Done!")
+    credentials = os.environ.get('GDRIVE_CREDENTIALS_DATA')
+    #model = retrain()
+    print(credentials)
 
-    upload_model(model)
+    #upload_model(model)
 
 def upload_model(model):
     pickle.dump(model, open("../model/model.pkl", 'wb'))
