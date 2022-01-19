@@ -1,3 +1,6 @@
 data
 /data-registry
 *pyc
+src/settings.yaml
+client-secrets.json
+src/credentials.json

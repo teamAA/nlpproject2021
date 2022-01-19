@@ -117,14 +117,14 @@ def main():
     col = get_bow_columns(bow_train)
     
     # Connect your script to Neptune
-    neptune.init(project_qualified_name='febiandika12/SentimentAnalysis', api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==')
+    #neptune.init(project_qualified_name='febiandika12/SentimentAnalysis', api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==')
     
     # Create an experiment and log hyperparameters
-    neptune.create_experiment('NLP_test')
+    #neptune.create_experiment('NLP_test')
 
     model = model_training(bow_train[col], train)
 
-    pickle.dump(model, open("../model/model.pkl", 'wb'))
+    
 
     logregpred = model.predict_proba(bow_test[col])
     pred_logreg = []
@@ -141,10 +141,11 @@ def main():
     else:
         pass
     
-    log_neptune(test, pred_logreg)
+    #log_neptune(test, pred_logreg)
     
-    with open("./version.txt", mode = "w") as f:
-        f.write(f"{len_train}, {len_test}")
+    return model
+    # with open("./version.txt", mode = "w") as f:
+    #     f.write(f"{len_train}, {len_test}")
     
 
 
