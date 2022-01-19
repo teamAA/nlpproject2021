@@ -28,6 +28,12 @@ jobs:
     - name: Download NLTK resources
       run: |
         python -m nltk.downloader all
+    - name: Create Secrets JSON File
+      uses: jsdaniell/create-json@1.1.2
+      with:
+        name: "credentials.json"
+        json: ${{ secrets.CREDENTIALS_JSON }}
+        dir: './src'
     - name: Retraining
       working-directory: ./src
       run: CREDENTIALS=$CREDENTIALS python main.py
