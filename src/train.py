@@ -12,6 +12,7 @@ from scikitplot.metrics import plot_roc, plot_confusion_matrix, plot_precision_r
 import neptune
 from neptunecontrib.monitoring.lightgbm import neptune_monitor
 import matplotlib.pyplot as plt
+import os
 
 # firli was here
 
@@ -84,7 +85,7 @@ def get_bow_columns(df_bow):
 
 def log_neptune(test, pred):
     #Connect your script to Neptune
-    neptune.init(project_qualified_name='febiandika12/SentimentAnalysis', api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJmZTcwY2UyYS1kZWQ1LTQ0OWYtOWNjMy1lNWNlZTFiZWVlN2UifQ==')
+    neptune.init(project_qualified_name=os.getenv('NEPTUNE_PROJECT_NAME'), api_token=os.getenv('NEPTUNE_API_TOKEN'))
     
     #Create an experiment and log hyperparameters
     neptune.create_experiment('NLP_test')
